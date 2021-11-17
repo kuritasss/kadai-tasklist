@@ -9,7 +9,7 @@
             <thead>
                 <tr>
                     <th>id</th>
-                    <th>メッセージ</th>
+                    <th>タスク</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,7 +24,7 @@
         </table>
     @endif
     
-    {{-- メッセージ作成ページへのリンク --}}
-    {!! link_to_route('tasks.create', '新規メッセージの投稿', [], ['class' => 'btn btn-primary']) !!}
+    {{-- 作成ページへのリンク --}}
+    {!! link_to_route('tasks.create', '新規タスクの投稿', [], ['class' => 'btn btn-primary']) !!}
 
 @endsection
