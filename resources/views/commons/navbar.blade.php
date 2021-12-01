@@ -16,7 +16,6 @@
                         @else
                             {{-- ユーザー登録ページへのリンク --}}
                             <li class="nav-item">{!! link_to_route('signup.get', 'Signup', [], ['class' => 'nav-link']) !!}</li>
-                            
                             {{-- ログインページへのリンク --}}
                             <li class="nav-item">{!! link_to_route('signup.post', 'Login', [], ['class' => 'nav-link']) !!}</li>
                         @endif
