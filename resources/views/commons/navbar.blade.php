@@ -13,11 +13,18 @@
                         @if(Auth::check())
                             {{-- タスク作成ページへのリンク --}}
                             <li class="nav-item">{!! link_to_route('tasks.create', '新規タスクの投稿', [], ['class' => 'nav-link']) !!}</li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->name }}</a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    {{-- ログアウトへのリンク --}}
+                                    <li class="dropdown-item">{!! link_to_route('logout.get','Logout') !!}</li>
+                                </ul>
+                            </li>
                         @else
                             {{-- ユーザー登録ページへのリンク --}}
                             <li class="nav-item">{!! link_to_route('signup.get', 'Signup', [], ['class' => 'nav-link']) !!}</li>
                             {{-- ログインページへのリンク --}}
-                            <li class="nav-item">{!! link_to_route('signup.post', 'Login', [], ['class' => 'nav-link']) !!}</li>
+                            <li class="nav-item">{!! link_to_route('login', 'Login', [], ['class' => 'nav-link']) !!}</li>
                         @endif
                     </ul>
                 </div>
