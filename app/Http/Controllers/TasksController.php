@@ -16,10 +16,19 @@ class TasksController extends Controller
     public function index()
     {
         //
-        $tasks = Task::all();
-        
-        return view('tasks.index', ['tasks' => $tasks, ]);
-        
+        if (\Auth::check()) {
+            //ログイン中
+            $user = \Auth::user();
+            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
+            
+             return view('tasks.index', ['tasks' => $tasks, ]);
+        }
+        else
+        {
+            // ログインしていない
+            return view('welcome');
+            
+        }
     }
 
     /**
@@ -49,14 +58,16 @@ class TasksController extends Controller
             'content' => 'required', 
         ]);
         
-        $task = new Task;
-        $task->status = $request->status;
-        $task->content = $request->content;
-        $task->save();
+            $task = new Task;
         
-        return redirect('/');
+            $task->user_id = \Auth::id();
+            $task->status = $request->status;
+            $task->content = $request->content;
+            $task->save();
+        
+            return redirect('/');
     }
-
+    
     /**
      * Display the specified resource.
      *
@@ -67,8 +78,14 @@ class TasksController extends Controller
     {
         //
         $task = Task::findOrFail($id);
-
-        return view('tasks.show', ['task' => $task], );
+        
+        if (\Auth::id() === $task->user->id) {
+        
+            return view('tasks.show', ['task' => $task], );
+        }
+        
+        return redirect('/');
+        
     }
 
     /**
@@ -82,7 +99,13 @@ class TasksController extends Controller
         //
         $task = Task::findOrFail($id);
         
-        return view('tasks.edit', ['task' => $task, ]);
+        if (\Auth::id() === $task->user->id) {
+        
+            return view('tasks.edit', ['task' => $task, ]);
+        }
+        
+        return redirect('/');
+        
     }
 
     /**
@@ -102,11 +125,14 @@ class TasksController extends Controller
         
         $task = Task::findOrFail($id);
         
-        $task->status = $request->status;
-        $task->content = $request->content;
-        $task->save();
+        if (\Auth::id() === $task->user_id) {
+            $task->status = $request->status;
+            $task->content = $request->content;
+            $task->save();
+        }
         
         return redirect('/');
+    
     }
 
     /**
@@ -120,7 +146,9 @@ class TasksController extends Controller
         //
         $task = Task::findOrFail($id);
         
-        $task->delete();
+        if (\Auth::id() === $task->user_id) {
+            $task->delete();
+        }
         
         return redirect('/');
     }
